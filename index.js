@@ -109,7 +109,7 @@ function lastLogCheckpoint(req, res) {
         console.log(`Sending ${context.logs.length}`);
         if (context.logs.length > 0) {
           context.logs.forEach(function (entry) {
-            Logger.send({ message: payload });
+            Logger.send({ message: entry });
           });
           Logger.flush(function(err, resp, body) {
             console.log("Response from Splunk:", body);
