@@ -90,8 +90,7 @@ module.exports =
 	    var config = {
 	      token: ctx.data.SPLUNK_URL,
 	      url: ctx.data.SPLUNK_TOKEN,
-	      batchInterval: 10000,
-	      maxBatchCount: 100
+	      maxBatchCount: 0 // Manually flush events
 	    };
 
 	    // Create a new logger
@@ -154,25 +153,19 @@ module.exports =
 
 	      callback(null, context);
 	    }, function (context, callback) {
-
 	      console.log('Sending ' + context.logs.length);
-
 	      if (context.logs.length > 0) {
 	        context.logs.forEach(function (entry) {
-	          var payload = {
-	            message: entry
-	          };
-	          Logger.send(payload, function (err, resp, body) {
-	            // THIS CALLBACK IS ONLY EXPECTED TO BE CALLED ONCE
-	            // In bulk mode with settings for 100 batching.
-	            console.log("Response from Splunk:", body);
-	            if (err) {
-	              console.log('Error sending logs to Splunk', err);
-	              return callback(err);
-	            }
-	            console.log('Upload complete.');
-	            return callback(null, context);
-	          });
+	          Logger.send({ message: payload });
+	        });
+	        Logger.flush(function (err, resp, body) {
+	          console.log("Response from Splunk:", body);
+	          if (err) {
+	            console.log('Error sending logs to Splunk', err);
+	            return callback(err);
+	          }
+	          console.log('Upload complete.');
+	          return callback(null, context);
 	        });
 	      } else {
 	        // no logs, just callback
