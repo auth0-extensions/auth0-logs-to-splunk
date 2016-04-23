@@ -21,7 +21,13 @@
     },
     "SPLUNK_TOKEN": {
       "description": "Splunk Token - this is your Splunk Token",
-      "required": true
+      "required": true,
+      "password": true
+    },
+    "SPLUNK_COLLECTOR_PORT": {
+      "description": "HTTP Collector Port",
+      "required": true,
+      "default": 8088
     },
     "BATCH_SIZE": {
       "description": "The ammount of logs to be read on each execution. Maximun is 100.",
