@@ -157,21 +157,28 @@ module.exports =
 
 	      console.log('Sending ' + context.logs.length);
 
-	      context.logs.forEach(function (payload) {
-	        Logger.send(payload, function (err, resp, body) {
-	          // THIS CALLBACK IS ONLY EXPECTED TO BE CALLED ONCE - either after 10 second flush,
-	          // or 100 logs appended for batch update - NOTE our retrieval limit from Auth0 is 100
-
-	          // If successful, body will be { text: 'Success', code: 0 }
-	          console.log("Response from Splunk", body);
-	          if (err) {
-	            console.log('Error sending logs to Splunk', err);
-	            return callback(err);
-	          }
-	          console.log('Upload complete.');
-	          return callback(null, context);
+	      if (context.logs.length > 0) {
+	        context.logs.forEach(function (entry) {
+	          var payload = {
+	            message: entry
+	          };
+	          Logger.send(payload, function (err, resp, body) {
+	            // THIS CALLBACK IS ONLY EXPECTED TO BE CALLED ONCE
+	            // In bulk mode with settings for 100 batching.
+	            console.log("Response from Splunk:", body);
+	            if (err) {
+	              console.log('Error sending logs to Splunk', err);
+	              return callback(err);
+	            }
+	            console.log('Upload complete.');
+	            return callback(null, context);
+	          });
 	        });
-	      });
+	      } else {
+	        // no logs, just callback
+	        console.log('Upload complete.');
+	        return callback(null, context);
+	      }
 	    }], function (err, context) {
 	      if (err) {
 	        console.log('Job failed.', err);
