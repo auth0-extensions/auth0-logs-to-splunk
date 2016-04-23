@@ -43,7 +43,7 @@ The following settings are optional:
 
 ## Usage
 
-Go to [Splunk](https://www.splunk.com) account to inspect logs
+Go to your splunk enterprise / splunk cloud instance and inspect the logs 
 
 Note that this extension is configured to talk to a Splunk HTTP Collector Endpoint.
 
