@@ -22,7 +22,7 @@
     "SPLUNK_TOKEN": {
       "description": "Splunk Token - this is your Splunk Token",
       "required": true,
-      "password": true
+      "type": "password"
     },
     "SPLUNK_COLLECTOR_PORT": {
       "description": "HTTP Collector Port",
