@@ -88,8 +88,8 @@ module.exports =
 	     * Due to max batch limit of 100 in retrieval from Auth0, we would expect a SINGLE call.
 	     */
 	    var config = {
-	      token: ctx.data.SPLUNK_URL,
-	      url: ctx.data.SPLUNK_TOKEN,
+	      token: ctx.data.SPLUNK_TOKEN,
+	      url: ctx.data.SPLUNK_URL,
 	      maxBatchCount: 0 // Manually flush events
 	    };
 
