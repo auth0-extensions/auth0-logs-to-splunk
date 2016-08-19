@@ -42,6 +42,7 @@ function lastLogCheckpoint(req, res) {
       token: ctx.data.SPLUNK_TOKEN,
       url: ctx.data.SPLUNK_URL,
       port: ctx.data.SPLUNK_COLLECTOR_PORT || 8088,
+      path: ctx.data.SPLUNK_COLLECTOR_PATH || '/services/collector/event/1.0',
       maxBatchCount: 0 // Manually flush events
     };
 
