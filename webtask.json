@@ -1,7 +1,7 @@
 {
   "title": "Auth0 Logs to Splunk",
   "name": "auth0-logs-to-splunk",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "auth0",
   "description": "This extension will take all of your Auth0 logs and export them to Splunk",
   "type": "cron",
@@ -26,8 +26,13 @@
     },
     "SPLUNK_COLLECTOR_PORT": {
       "description": "HTTP Collector Port",
-      "required": true,
+      "required": false,
       "default": 8088
+    },
+    "SPLUNK_COLLECTOR_PATH": {
+      "description": "HTTP Collector Path (Endpoint)",
+      "required": false,
+      "default": "/services/collector/event/1.0"
     },
     "BATCH_SIZE": {
       "description": "The ammount of logs to be read on each execution. Maximun is 100.",
