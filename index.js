@@ -13,7 +13,7 @@ const memoizer = require('lru-memoizer');
 
 function lastLogCheckpoint(req, res) {
   let ctx = req.webtaskContext;
-  let required_settings = ['AUTH0_DOMAIN', 'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SPLUNK_URL', 'SPLUNK_TOKEN', 'SPLUNK_COLLECTOR_PORT'];
+  let required_settings = ['AUTH0_DOMAIN', 'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SPLUNK_URL', 'SPLUNK_TOKEN'];
   let missing_settings = required_settings.filter((setting) => !ctx.data[setting]);
 
   if (missing_settings.length) {
