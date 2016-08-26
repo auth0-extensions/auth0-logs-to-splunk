@@ -678,9 +678,9 @@ module.exports =
 	        // creating authenticated webtasks. In this case we will use webtask token
 	        // itself as a JWT signing key. The webtask token of a named webtask is secret
 	        // and it contains enough entropy (jti, iat, ca) to pass
-	        // for a symmetric key. Using webtask token ensures that the JWT signing secret 
-	        // remains constant for the lifetime of the webtask; however regenerating 
-	        // the webtask will invalidate previously issued JWTs. 
+	        // for a symmetric key. Using webtask token ensures that the JWT signing secret
+	        // remains constant for the lifetime of the webtask; however regenerating
+	        // the webtask will invalidate previously issued JWTs.
 	        return ctx.secrets.WEBTASK_SECRET || req.x_wt.token;
 	    };
 	    options.getApiKey = options.getApiKey || function (ctx, req) {
@@ -701,16 +701,16 @@ module.exports =
 	                res.writeHead(302, { Location: error.redirect });
 	                return res.end(JSON.stringify(error));
 	            }
-	            res.writeHead(error.code || 401, { 
-	                'Content-Type': 'text/html', 
-	                'Cache-Control': 'no-cache' 
+	            res.writeHead(error.code || 401, {
+	                'Content-Type': 'text/html',
+	                'Cache-Control': 'no-cache'
 	            });
 	            return res.end(getNotAuthorizedHtml(baseUrl + '/login'));
 	        }
 	        else {
 	            // Reject all other requests
 	            return error(error, res);
-	        }            
+	        }
 	    };
 	    if (typeof options.authorized === 'string') {
 	        options.authorized = [ options.authorized ];
@@ -748,7 +748,7 @@ module.exports =
 	function createAuthenticatedWebtask(webtask, options) {
 
 	    // Inject middleware into the HTTP pipeline before the webtask handler
-	    // to implement authentication endpoints and perform authentication 
+	    // to implement authentication endpoints and perform authentication
 	    // and authorization.
 
 	    return function (ctx, req, res) {
@@ -837,7 +837,7 @@ module.exports =
 /***/ function(module, exports) {
 
 	module.exports = function (err, res) {
-	    res.writeHead(err.code || 500, { 
+	    res.writeHead(err.code || 500, {
 	        'Content-Type': 'application/json',
 	        'Cache-Control': 'no-cache'
 	    });
@@ -885,7 +885,7 @@ module.exports =
 	                code: 401,
 	                message: 'Unauthorized.',
 	                error: e.message
-	            }, ctx, req, res, routingInfo.baseUrl);       
+	            }, ctx, req, res, routingInfo.baseUrl);
 	        }
 
 	        ctx.apiKey = apiKey;
@@ -896,7 +896,7 @@ module.exports =
 	            return options.loginError({
 	                code: 403,
 	                message: 'Forbidden.'
-	            }, ctx, req, res, routingInfo.baseUrl);        
+	            }, ctx, req, res, routingInfo.baseUrl);
 	        }
 
 	        return run();
@@ -946,7 +946,7 @@ module.exports =
 	    }
 	    else if (count === 2) {
 	        // Use custom Auth0 account
-	        var authUrl = 'https://' + authParams.domain + '/authorize' 
+	        var authUrl = 'https://' + authParams.domain + '/authorize'
 	            + '?response_type=code'
 	            + '&scope=' + encodeURIComponent(scope)
 	            + '&client_id=' + encodeURIComponent(authParams.clientId)
@@ -1031,7 +1031,7 @@ module.exports =
 	            }, ctx, req, res, routingInfo.baseUrl);
 	        }
 
-	        // Issue apiKey by re-signing the id_token claims 
+	        // Issue apiKey by re-signing the id_token claims
 	        // with configured secret (webtask token by default).
 
 	        var secret = options.webtaskSecret(ctx, req);
@@ -1154,8 +1154,8 @@ module.exports =
 	}
 
 	/**
-	 * Constructs a SplunkLogger, to send events to Splunk Enterprise or Splunk Cloud 
-	 * via HTTP Event Collector. See <code>defaultConfig</code> for default 
+	 * Constructs a SplunkLogger, to send events to Splunk Enterprise or Splunk Cloud
+	 * via HTTP Event Collector. See <code>defaultConfig</code> for default
 	 * configuration settings.
 	 *
 	 * @example
@@ -1187,7 +1187,7 @@ module.exports =
 	 * @param {string} [config.protocol=https] - Protocol used to communicate with the Splunk Enterprise or Splunk Cloud server, <code>http</code> or <code>https</code>.
 	 * @param {number} [config.port=8088] - HTTP Event Collector port on the Splunk Enterprise or Splunk Cloud server.
 	 * @param {string} [config.url] - URL string to pass to {@link https://nodejs.org/api/url.html#url_url_parsing|url.parse}. This will try to set
-	 * <code>host</code>, <code>path</code>, <code>protocol</code>, <code>port</code>, <code>url</code>. Any of these values will be overwritten if 
+	 * <code>host</code>, <code>path</code>, <code>protocol</code>, <code>port</code>, <code>url</code>. Any of these values will be overwritten if
 	 * the corresponding property is set on <code>config</code>.
 	 * @param {string} [config.level=info] - Logging level to use, will show up as the <code>severity</code> field of an event, see
 	 *  [SplunkLogger.levels]{@link SplunkLogger#levels} for common levels.
@@ -1284,7 +1284,7 @@ module.exports =
 	    if (this._timerID) {
 	        this._disableTimer();
 	    }
-	    
+
 	    // If batch interval is changed, update the config property
 	    if (this.config) {
 	        this.config.batchInterval = interval;
@@ -1379,7 +1379,7 @@ module.exports =
 	        var startTimer = !this._timerID && ret.batchInterval > 0;
 	        // Has the interval timer already started, and the interval changed to a different duration?
 	        var changeTimer = this._timerID && this._timerDuration !== ret.batchInterval && ret.batchInterval > 0;
-	        
+
 	        // Enable the timer
 	        if (startTimer || changeTimer) {
 	            this._enableTimer(ret.batchInterval);
@@ -1501,7 +1501,7 @@ module.exports =
 	    var body = this._initializeMetadata(context);
 	    var time = utils.formatTime(body.time || Date.now());
 	    body.time = time.toString();
-	    
+
 	    body.event = this.eventFormatter(context.message, context.severity || defaultConfig.level);
 	    return body;
 	};
@@ -1592,7 +1592,7 @@ module.exports =
 	        }
 	    );
 	};
-	 
+
 	/**
 	 * Sends or queues data to be sent based on batching settings.
 	 * Default behavior is to send immediately.
@@ -1601,8 +1601,8 @@ module.exports =
 	 * var SplunkLogger = require("splunk-logging").Logger;
 	 * var config = {
 	 *     token: "your-token-here"
-	 * }; 
-	 * 
+	 * };
+	 *
 	 * var logger = new SplunkLogger(config);
 	 *
 	 * // Payload to send to HTTP Event Collector.
@@ -1618,7 +1618,7 @@ module.exports =
 	 *         index: "main",
 	 *         host: "farm.local",
 	 *     }
-	 * }; 
+	 * };
 	 *
 	 * // The callback is only used if maxBatchCount=1, or
 	 * // batching thresholds have been exceeded.
@@ -1645,7 +1645,7 @@ module.exports =
 	 */
 	SplunkLogger.prototype.send = function(context, callback) {
 	    context = this._initializeContext(context);
-	    
+
 	    // Store the context, and its estimated length
 	    var currentEvent = JSON.stringify(this._makeBody(context));
 	    this.serializedContextQueue.push(currentEvent);
@@ -1679,7 +1679,7 @@ module.exports =
 	    var context = {
 	        message: data
 	    };
-	    
+
 	    this._sendEvents(context, callback);
 	};
 
@@ -1723,7 +1723,7 @@ module.exports =
 	 */
 	utils.formatTime = function(time) {
 	    var cleanTime;
-	    
+
 	    // If time is a Date object, return its value.
 	    if (time instanceof Date) {
 	        time = time.valueOf();
@@ -2134,7 +2134,7 @@ module.exports =
 /* 22 */
 /***/ function(module, exports) {
 
-	module.exports = require(undefined);
+	module.exports = require('lodash');
 
 /***/ }
 /******/ ]);
