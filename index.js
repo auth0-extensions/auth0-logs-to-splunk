@@ -13,7 +13,7 @@ const memoizer = require('lru-memoizer');
 
 function lastLogCheckpoint(req, res) {
   let ctx = req.webtaskContext;
-  let required_settings = ['AUTH0_DOMAIN', 'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SPLUNK_URL', 'SPLUNK_TOKEN', 'SPLUNK_COLLECTOR_PORT'];
+  let required_settings = ['AUTH0_DOMAIN', 'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SPLUNK_URL', 'SPLUNK_TOKEN'];
   let missing_settings = required_settings.filter((setting) => !ctx.data[setting]);
 
   if (missing_settings.length) {
@@ -42,6 +42,7 @@ function lastLogCheckpoint(req, res) {
       token: ctx.data.SPLUNK_TOKEN,
       url: ctx.data.SPLUNK_URL,
       port: ctx.data.SPLUNK_COLLECTOR_PORT || 8088,
+      path: ctx.data.SPLUNK_COLLECTOR_PATH || '/services/collector/event/1.0',
       maxBatchCount: 0 // Manually flush events
     };
 

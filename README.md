@@ -24,8 +24,8 @@ $ npm run build
 $ wt cron schedule \
     --name auth0-logs-to-splunk \
     --secret AUTH0_DOMAIN="YOUR_AUTH0_DOMAIN" \
-    --secret AUTH0_GLOBAL_CLIENT_ID="YOUR_AUTH0_GLOBAL_CLIENT_ID" \
-    --secret AUTH0_GLOBAL_CLIENT_SECRET="YOUR_AUTH0_GLOBAL_CLIENT_SECRET" \
+    --secret AUTH0_CLIENT_ID="YOUR_AUTH0_CLIENT_ID" \
+    --secret AUTH0_CLIENT_SECRET="YOUR_AUTH0_CLIENT_SECRET" \
     --secret LOG_LEVEL="1" \
     --secret LOG_TYPES="s,f" \
     --secret SPLUNK_URL="SPLUNK_URL" \
