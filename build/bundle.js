@@ -2134,7 +2134,7 @@ module.exports =
 /* 22 */
 /***/ function(module, exports) {
 
-	module.exports = require("lodash");
+	module.exports = require(undefined);
 
 /***/ }
 /******/ ]);
