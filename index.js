@@ -1,6 +1,5 @@
 'use strict';
 
-const Auth0 = require('auth0');
 const async = require('async');
 const moment = require('moment');
 const useragent = require('useragent');
@@ -27,12 +26,6 @@ function lastLogCheckpoint(req, res) {
     if (err) {
       console.log('storage.get', err);
     }
-
-    // Initialize both clients.
-    const auth0 = new Auth0.ManagementClient({
-      domain: ctx.data.AUTH0_DOMAIN,
-      token: req.access_token
-    });
 
     /**
      * Here, batchInterval is set to flush every 10 second or when 100 events are queued
