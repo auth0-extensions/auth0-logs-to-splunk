@@ -18,7 +18,6 @@
   "homepage": "https://github.com/auth0/auth0-logs-to-splunk#readme",
   "dependencies": {
     "async": "1.0.0",
-    "auth0": "0.8.2",
     "express": "4.12.4",
     "json-stringify-safe": "^5.0.1",
     "lru-memoizer": "^1.2.0",
