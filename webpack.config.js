@@ -45,7 +45,8 @@ module.exports = {
     'auth0-oauth2-express': true,
     'auth0-sandbox-ext': true,
     'detective': true,
-    'sandboxjs': true
+    'sandboxjs': true,
+    'webtask-tools': true
   }),
   plugins: [
     new Webpack.optimize.DedupePlugin(),
