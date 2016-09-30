@@ -1,0 +1,6 @@
+version: v1.5.2
+ignore: {}
+patch:
+  'npm:request:20160119':
+    - splunk-logging > request:
+        patched: '2016-09-30T02:52:57.293Z'
