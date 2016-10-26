@@ -51,16 +51,15 @@ module.exports =
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-	var Auth0 = __webpack_require__(1);
-	var async = __webpack_require__(2);
-	var moment = __webpack_require__(3);
-	var useragent = __webpack_require__(4);
-	var express = __webpack_require__(5);
-	var Webtask = __webpack_require__(6);
+	var async = __webpack_require__(1);
+	var moment = __webpack_require__(2);
+	var useragent = __webpack_require__(3);
+	var express = __webpack_require__(4);
+	var Webtask = __webpack_require__(5);
 	var app = express();
-	var SplunkLogger = __webpack_require__(7).Logger;
-	var Request = __webpack_require__(9);
-	var memoizer = __webpack_require__(12);
+	var SplunkLogger = __webpack_require__(6).Logger;
+	var Request = __webpack_require__(8);
+	var memoizer = __webpack_require__(11);
 
 	function lastLogCheckpoint(req, res) {
 	  var ctx = req.webtaskContext;
@@ -75,17 +74,12 @@ module.exports =
 
 	  // If this is a scheduled task, we'll get the last log checkpoint from the previous run and continue from there.
 	  req.webtaskContext.storage.get(function (err, data) {
-	    var startCheckpointId = typeof data === 'undefined' ? null : data.checkpointId;
+	    var startFromId = ctx.data.START_FROM ? ctx.data.START_FROM : null;
+	    var startCheckpointId = typeof data === 'undefined' ? startFromId : data.checkpointId;
 
 	    if (err) {
 	      console.log('storage.get', err);
 	    }
-
-	    // Initialize both clients.
-	    var auth0 = new Auth0.ManagementClient({
-	      domain: ctx.data.AUTH0_DOMAIN,
-	      token: req.access_token
-	    });
 
 	    /**
 	     * Here, batchInterval is set to flush every 10 second or when 100 events are queued
@@ -114,7 +108,7 @@ module.exports =
 
 	        var take = Number.parseInt(ctx.data.BATCH_SIZE);
 
-	        take = take > 100 ? 100 : take;
+	        take = take ? take : 100;
 
 	        context.logs = context.logs || [];
 
@@ -477,37 +471,59 @@ module.exports =
 /* 1 */
 /***/ function(module, exports) {
 
-	module.exports = require("auth0@2.1.0");
+	module.exports = require("async");
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = require("async");
+	module.exports = require("moment");
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = require("moment");
+	module.exports = require("useragent");
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = require("useragent");
+	module.exports = require("express");
 
 /***/ },
 /* 5 */
 /***/ function(module, exports) {
 
-	module.exports = require("express");
+	module.exports = require("webtask-tools");
 
 /***/ },
 /* 6 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("webtask-tools");
+	/*
+	 * Copyright 2015 Splunk, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License"): you may
+	 * not use this file except in compliance with the License. You may obtain
+	 * a copy of the License at
+	 *
+	 *     http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+	 * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+	 * License for the specific language governing permissions and limitations
+	 * under the License.
+	 */
+
+	var SplunkLogger = __webpack_require__(7);
+	var utils = __webpack_require__(10);
+
+	module.exports = {
+	    Logger: SplunkLogger,
+	    utils: utils
+	};
 
 /***/ },
 /* 7 */
@@ -529,38 +545,10 @@ module.exports =
 	 * under the License.
 	 */
 
-	var SplunkLogger = __webpack_require__(8);
-	var utils = __webpack_require__(11);
+	var request = __webpack_require__(8);
+	var url = __webpack_require__(9);
 
-	module.exports = {
-	    Logger: SplunkLogger,
-	    utils: utils
-	};
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * Copyright 2015 Splunk, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License"): you may
-	 * not use this file except in compliance with the License. You may obtain
-	 * a copy of the License at
-	 *
-	 *     http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-	 * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-	 * License for the specific language governing permissions and limitations
-	 * under the License.
-	 */
-
-	var request = __webpack_require__(9);
-	var url = __webpack_require__(10);
-
-	var utils = __webpack_require__(11);
+	var utils = __webpack_require__(10);
 
 	/**
 	 * Default error handler for <code>SplunkLogger</code>.
@@ -1126,19 +1114,19 @@ module.exports =
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	module.exports = require("request");
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = require("url");
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports) {
 
 	/**
@@ -1450,11 +1438,11 @@ module.exports =
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const LRU        = __webpack_require__(13);
-	const _          = __webpack_require__(14);
+	const LRU        = __webpack_require__(12);
+	const _          = __webpack_require__(13);
 	const lru_params = [ 'max', 'maxAge', 'length', 'dispose', 'stale' ];
 
 	module.exports = function (options) {
@@ -1576,16 +1564,16 @@ module.exports =
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	module.exports = require("lru-cache");
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports) {
 
-	module.exports = require("lodash");
+	module.exports = require('lodash');
 
 /***/ }
 /******/ ]);

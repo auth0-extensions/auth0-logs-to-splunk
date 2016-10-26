@@ -1,7 +1,7 @@
 {
   "title": "Auth0 Logs to Splunk",
   "name": "auth0-logs-to-splunk",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "auth0",
   "description": "This extension will take all of your Auth0 logs and export them to Splunk",
   "type": "cron",
@@ -37,6 +37,9 @@
     "BATCH_SIZE": {
       "description": "The ammount of logs to be read on each execution. Maximun is 100.",
       "default": 100
+    },
+    "START_FROM": {
+      "description": "The Auth0 LogId from where you want to start."
     },
     "LOG_LEVEL": {
       "description": "This allows you to specify the log level of events that need to be sent",
