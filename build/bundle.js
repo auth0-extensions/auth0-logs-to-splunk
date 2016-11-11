@@ -114,8 +114,7 @@ module.exports =
 
 	        getLogsFromAuth0(req.webtaskContext.data.AUTH0_DOMAIN, req.access_token, take, context.checkpointId, function (logs, err) {
 	          if (err) {
-	            console.log('Error getting logs from Auth0', err);
-	            return callback(err);
+	            return callback({ error: err, message: 'Error getting logs from Auth0' });
 	          }
 
 	          var batch_size = ctx.data.MAX_BATCH_SIZE || 3000;
@@ -165,8 +164,7 @@ module.exports =
 	        Logger.flush(function (err, resp, body) {
 	          console.log("Response from Splunk:", body);
 	          if (err) {
-	            console.log('Error sending logs to Splunk', err);
-	            return callback(err);
+	            return callback({ error: err, message: 'Error sending logs to Splunk' });
 	          }
 	          console.log('Upload complete.');
 	          return callback(null, context);
@@ -182,13 +180,10 @@ module.exports =
 
 	        return req.webtaskContext.storage.set({ checkpointId: startCheckpointId }, { force: 1 }, function (error) {
 	          if (error) {
-	            console.log('Error storing startCheckpoint', error);
-	            return res.status(500).send({ error: error });
+	            return res.status(500).send({ error: error, message: 'Error storing startCheckpoint' });
 	          }
 
-	          res.status(500).send({
-	            error: err
-	          });
+	          res.status(500).send(err);
 	        });
 	      }
 
@@ -199,8 +194,7 @@ module.exports =
 	        totalLogsProcessed: context.logs.length
 	      }, { force: 1 }, function (error) {
 	        if (error) {
-	          console.log('Error storing checkpoint', error);
-	          return res.status(500).send({ error: error });
+	          return res.status(500).send({ error: error, message: 'Error storing checkpoint' });
 	        }
 
 	        res.sendStatus(200);
@@ -1846,7 +1840,7 @@ module.exports =
 /* 15 */
 /***/ function(module, exports) {
 
-	module.exports = require("lodash");
+	module.exports = require('lodash');
 
 /***/ }
 /******/ ]);
