@@ -43,6 +43,25 @@
     "START_FROM": {
       "description": "The Auth0 LogId from where you want to start."
     },
+    "SLACK_INCOMING_WEBHOOK_URL": {
+      "description": "Slack webhook"
+    },
+    "SLACK_SEND_SUCCESS": {
+      "description": "If disabled, only failed runs will be reported to Slack",
+      "type": "select",
+      "allowMultiple": false,
+      "default": "false",
+      "options": [
+        {
+          "value": "false",
+          "text": "No"
+        },
+        {
+          "value": "true",
+          "text": "Yes"
+        }
+      ]
+    },
     "LOG_LEVEL": {
       "description": "This allows you to specify the log level of events that need to be sent",
       "type": "select",
