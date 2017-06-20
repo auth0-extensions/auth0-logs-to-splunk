@@ -11,7 +11,7 @@ module.exports = (storage) =>
     const isCron = (wtBody.schedule && wtBody.state === 'active') || (wtHead.referer === 'https://manage.auth0.com/' && wtHead['if-none-match']);
 
     if (!isCron) {
-      // return next();
+      return next();
     }
 
     const Logger = new SplunkLogger({
