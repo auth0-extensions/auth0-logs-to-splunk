@@ -31,7 +31,7 @@
     },
     "SPLUNK_COLLECTOR_PORT": {
       "description": "HTTP Collector Port",
-      "required": false,
+      "required": true,
       "default": 8088
     },
     "SPLUNK_COLLECTOR_PATH": {
