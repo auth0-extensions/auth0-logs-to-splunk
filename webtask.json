@@ -44,7 +44,7 @@
       "description": "Checkpoint ID of log to start from."
     },
     "SLACK_INCOMING_WEBHOOK_URL": {
-      "description": "Slack Incoming Webhook URL used to report statistics"
+      "description": "Slack Incoming Webhook URL used to report statistics and possible failures"
     },
     "SLACK_SEND_SUCCESS": {
       "description": "If disabled, only failed runs and daily reports will be reported to Slack",
