@@ -47,8 +47,7 @@ module.exports = (configProvider, storageProvider) => {
     baseUrl: config('PUBLIC_WT_URL') || config('WT_URL'),
     clientName: 'Logs to Splunk',
     urlPrefix: '',
-    sessionStorageKey: 'logs-to-splunk:apiToken',
-    scopes: 'read:logs'
+    sessionStorageKey: 'logs-to-splunk:apiToken'
   }));
   app.use('/meta', meta());
   app.use('/.extensions', hooks());
