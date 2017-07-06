@@ -23,6 +23,11 @@ module.exports = (storage) =>
       maxBatchCount: 0 // Manually flush events
     });
 
+
+    Logger.requestOptions = {
+      timeout: 5000
+    };
+
     Logger.error = function (err, context) {
       // Handle errors here
       logger.error('error', err, 'context', context);
