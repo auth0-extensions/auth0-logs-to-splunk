@@ -39,16 +39,6 @@ module.exports = (configProvider, storageProvider) => {
   app.use(prepareBody(bodyParser.urlencoded({ extended: false })));
 
   // Configure routes.
-  app.use(expressTools.routes.dashboardAdmins({
-    secret: config('EXTENSION_SECRET'),
-    audience: 'urn:logs-to-splunk',
-    rta: config('AUTH0_RTA').replace('https://', ''),
-    domain: config('AUTH0_DOMAIN'),
-    baseUrl: config('PUBLIC_WT_URL') || config('WT_URL'),
-    clientName: 'Logs to Splunk',
-    urlPrefix: '',
-    sessionStorageKey: 'logs-to-splunk:apiToken'
-  }));
   app.use('/meta', meta());
   app.use('/.extensions', hooks());
 
