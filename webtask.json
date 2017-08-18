@@ -5,6 +5,7 @@
   "author": "auth0",
   "description": "This extension will take all of your Auth0 logs and export them to Splunk",
   "type": "cron",
+  "initialUrlPath": "/login",
   "category": "log_export",
   "repository": "https://github.com/auth0-extensions/auth0-logs-to-splunk",
   "docsUrl": "https://auth0.com/docs/extensions/splunk",
