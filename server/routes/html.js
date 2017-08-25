@@ -28,8 +28,8 @@ module.exports = () => {
     <script type="text/javascript" src="//cdn.auth0.com/w2/auth0-7.0.4.min.js"></script>
     <script type="text/javascript" src="//cdn.auth0.com/manage/v0.3.1672/js/bundle.js"></script>
     <script type="text/javascript">window.config = <%- JSON.stringify(config) %>;</script>
-    <% if (assets.vendors) { %><script type="text/javascript" src="<%= assets.vendors %>"></script><% } %>
-    <% if (assets.app) { %><script type="text/javascript" src="<%= assets.app %>"></script><% } %>
+    <% if (assets.vendors) { %><script type="text/javascript" src="/app/<%= assets.vendors %>"></script><% } %>
+    <% if (assets.app) { %><script type="text/javascript" src="/app/<%= assets.app %>"></script><% } %>
     <% if (assets.version) { %>
     <script type="text/javascript" src="//cdn.auth0.com/extensions/auth0-logs-to-splunk/assets/auth0-logs-to-splunk.ui.vendors.<%= assets.version %>.js"></script>
     <script type="text/javascript" src="//cdn.auth0.com/extensions/auth0-logs-to-splunk/assets/auth0-logs-to-splunk.ui.<%= assets.version %>.js"></script>
