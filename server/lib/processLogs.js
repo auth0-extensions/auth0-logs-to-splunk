@@ -5,7 +5,7 @@ const loggingTools = require('auth0-log-extension-tools');
 const config = require('./config');
 const logger = require('./logger');
 
-module.exports = (storage) =>
+module.exports = storage =>
   (req, res, next) => {
     const wtBody = (req.webtaskContext && req.webtaskContext.body) || req.body || {};
     const wtHead = (req.webtaskContext && req.webtaskContext.headers) || {};
@@ -28,7 +28,7 @@ module.exports = (storage) =>
       timeout: 5000
     };
 
-    Logger.error = function (err, context) {
+    Logger.error = (err, context) => {
       // Handle errors here
       logger.error('error', err, 'context', context);
     };
@@ -38,13 +38,11 @@ module.exports = (storage) =>
         return cb();
       }
 
-      logs.forEach(function (entry) {
-        Logger.send({ message: entry });
-      });
+      logs.forEach(entry => Logger.send({ message: entry }));
 
       logger.info(`Sending ${logs.length} logs to Splunk...`);
 
-      Logger.flush(function(error, response, body) {
+      return Logger.flush(function(error, response, body) {
         logger.info('Splunk response', body);
         if (error) {
           return cb({ error: error, message: 'Error sending logs to Splunk' });
@@ -65,7 +63,7 @@ module.exports = (storage) =>
       domain: config('AUTH0_DOMAIN'),
       clientId: config('AUTH0_CLIENT_ID'),
       clientSecret: config('AUTH0_CLIENT_SECRET'),
-      batchSize: parseInt(config('BATCH_SIZE')),
+      batchSize: parseInt(config('BATCH_SIZE'), 10),
       startFrom: config('START_FROM'),
       logTypes: config('LOG_TYPES'),
       logLevel: config('LOG_LEVEL')
@@ -104,12 +102,12 @@ module.exports = (storage) =>
           if (data.lastReportDate !== now && new Date().getHours() >= reportTime) {
             sendDailyReport(now);
           }
-        })
+        });
     };
 
     return auth0logger
       .run(onLogsReceived)
-      .then(result => {
+      .then((result) => {
         if (result && result.status && result.status.error) {
           slack.send(result.status, result.checkpoint);
         } else if (config('SLACK_SEND_SUCCESS') === true || config('SLACK_SEND_SUCCESS') === 'true') {
@@ -118,7 +116,7 @@ module.exports = (storage) =>
         checkReportTime();
         res.json(result);
       })
-      .catch(err => {
+      .catch((err) => {
         slack.send({ error: err, logsProcessed: 0 }, null);
         checkReportTime();
         next(err);
