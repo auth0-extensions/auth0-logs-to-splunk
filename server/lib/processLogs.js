@@ -68,7 +68,8 @@ module.exports = (storage) =>
       batchSize: parseInt(config('BATCH_SIZE')),
       startFrom: config('START_FROM'),
       logTypes: config('LOG_TYPES'),
-      logLevel: config('LOG_LEVEL')
+      logLevel: config('LOG_LEVEL'),
+      maxRunTimeSeconds: 28
     };
 
     if (!options.batchSize || options.batchSize > 100) {

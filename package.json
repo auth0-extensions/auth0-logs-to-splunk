@@ -1,6 +1,6 @@
 {
   "name": "auth0-logs-to-splunk",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "This extension will take all of your Auth0 logs and export them to Splunk.",
   "main": "index.js",
   "scripts": {
@@ -117,7 +117,7 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
-    "auth0-extensions-cli": "^1.0.5",
+    "auth0-extensions-cli": "1.0.8",
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^6.2.4",
