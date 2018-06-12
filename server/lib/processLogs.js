@@ -5,6 +5,9 @@ const loggingTools = require('auth0-log-extension-tools');
 const config = require('./config');
 const logger = require('./logger');
 
+const MS_PER_S = 1000;
+const NS_PER_MS = 1000000;
+
 module.exports = (storage) =>
   (req, res, next) => {
     const wtBody = (req.webtaskContext && req.webtaskContext.body) || req.body || {};
@@ -38,6 +41,8 @@ module.exports = (storage) =>
         return cb();
       }
 
+      const startTime = process.hrtime();
+
       logs.forEach(function (entry) {
         Logger.send({ message: entry });
       });
@@ -45,6 +50,11 @@ module.exports = (storage) =>
       logger.info(`Sending ${logs.length} logs to Splunk...`);
 
       Logger.flush(function(error, response, body) {
+        const elapsedTime = process.hrtime(startTime);
+        const elapsedMillis = elapsedTime[0] * MS_PER_S + elapsedTime[1] / NS_PER_MS;
+
+        logger.info(`Finished sending logs to Splunk in ${elapsedMillis}ms.`);
+
         logger.info('Splunk response', body);
         if (error) {
           return cb({ error: error, message: 'Error sending logs to Splunk' });
@@ -68,7 +78,8 @@ module.exports = (storage) =>
       batchSize: parseInt(config('BATCH_SIZE')),
       startFrom: config('START_FROM'),
       logTypes: config('LOG_TYPES'),
-      logLevel: config('LOG_LEVEL')
+      logLevel: config('LOG_LEVEL'),
+      logger
     };
 
     if (!options.batchSize || options.batchSize > 100) {
